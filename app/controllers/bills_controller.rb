@@ -1,4 +1,6 @@
 class BillsController < ApplicationController
+  before_action :authenticate_user!
+
   def new
     @bill = Bill.new
     @bill.build_client
