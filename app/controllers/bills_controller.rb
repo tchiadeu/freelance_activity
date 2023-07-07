@@ -37,14 +37,6 @@ class BillsController < ApplicationController
     bills_of_year.sum(:total_amount)
   end
 
-  def total_item_price
-    if current_year_amount > 36_800
-      item.total_price = item.quantity.to_f * item.unit_price.to_f * 1.2
-    else
-      item.total_price = item.quantity.to_f * item.unit_price.to_f
-    end
-  end
-
   def build_client
     client = Client.new(
       name: params[:bill][:client_attributes][:name],
@@ -85,7 +77,11 @@ class BillsController < ApplicationController
         quantity: item_params[:quantity],
         unit_price: item_params[:unit_price]
       )
-      total_item_price
+      if current_year_amount > 36_800
+        item.total_price = item.quantity.to_f * item.unit_price.to_f * 1.2
+      else
+        item.total_price = item.quantity.to_f * item.unit_price.to_f
+      end
       @bill.items << item if item.name.present?
     end
   end
