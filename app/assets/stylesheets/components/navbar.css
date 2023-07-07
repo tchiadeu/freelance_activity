@@ -1,0 +1,14 @@
+.navbar {
+  width: 100vw;
+  border-bottom: 2px solid #4F46E5;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-block {
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
+  gap: 30px;
+}
