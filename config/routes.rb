@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   root to: 'pages#dashboard'
   resources 'bills', only: %i[show new create edit update destroy]
   resources 'clients', only: %i[show new create edit update destroy]
+  resources 'banks', only: %i[new create edit update destroy]
 end
