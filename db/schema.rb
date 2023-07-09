@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_09_104849) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_09_182422) do
+  create_table "banks", force: :cascade do |t|
+    t.string "name"
+    t.string "bic_number"
+    t.string "iban_number"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_banks_on_user_id"
+  end
+
   create_table "bills", force: :cascade do |t|
     t.integer "number"
     t.decimal "total_amount"
@@ -72,6 +82,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_09_104849) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "banks", "users"
   add_foreign_key "bills", "clients"
   add_foreign_key "bills", "users"
   add_foreign_key "clients", "users"
