@@ -1,6 +1,8 @@
 <div data-controller="items">
   <%= form_with model: @bill do |form| %>
 
+    <%= form.select :client, in: current_user.clients.map { |client| client.name } %>
+
     <%= form.fields_for :client do |client_fields| %>
 
       <%= client_fields.label :name, "Nom" %>
@@ -34,7 +36,7 @@
     </button>
 
     <% 10.times do |i| %>
-      <div data-items-target="items">
+      <div class="hidden" data-items-target="items">
         <%= form.fields_for :item, index: i do |item_fields| %>
 
           <%= item_fields.label :name, "Désignation" %>
