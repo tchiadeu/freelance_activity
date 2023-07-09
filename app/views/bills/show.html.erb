@@ -1,0 +1,99 @@
+<h1>Facture</h1>
+
+<div>
+  <div class='flex flex-row justify-between'>
+    <p>Numéro de facture</p>
+    <p><%= "F-#{@bill.year}-#{bill_number}" %></p>
+  </div>
+  <div>
+    <p>Date d'émission</p>
+    <p><%= @bill.emission_date %></p>
+  </div>
+  <div>
+    <p>Date d'exigibilité du paiement</p>
+    <p><%= @bill.due_date %></p>
+  </div>
+</div>
+
+<div>
+  <div>
+    <h3><%= "EI - #{@bill.user.name.upcase}" %></h3>
+    <p><%= @bill.user.address.upcase %></p>
+    <p><%= "#{@bill.user.post_code}, #{@bill.user.city.upcase}" %></p>
+    <p><%= @bill.user.siret_number %></p>
+    <% if tva_application? %>
+      <p><%= @bill.user.tva_number %></p>
+    <% end %>
+    <p><%= @bill.user.email %></p>
+  </div>
+  <div>
+    <h3><%= @bill.client.name.upcase %></h3>
+    <p><%= @bill.client.address.upcase %></p>
+    <p><%= "#{@bill.client.post_code}, #{@bill.client.city.upcase}" %></p>
+    <p><%= @bill.client.siret_number %></p>
+    <% if tva_application? %>
+      <p><%= @bill.client.tva_number %></p>
+    <% end %>
+  </div>
+</div>
+
+<div>
+  <div>
+    <p>Items</p>
+    <p>Unité</p>
+    <p>Qté</p>
+    <p>Prix unitaire</p>
+    <p>Montant HT</p>
+    <% if tva_application? %>
+      <p>TVA (%)</p>
+      <p>Montant de la TVA</p>
+      <p>Montant TTC</p>
+    <% end %>
+  </div>
+  <% @bill.items.each do |item| %>
+    <div>
+      <div>
+        <p><%= item.name %></p>
+        <p><%= item.description %></p>
+      </div>
+      <p><%= item.unity %></p>
+      <p><%= item.quantity %></p>
+      <p><%= sprintf("%.2f", item.unit_price) %></p>
+      <p><%= sprintf("%.2f", ht_price(item)) %></p>
+      <% if tva_application? %>
+        <p>20%</p>
+        <p><%= sprintf("%.2f", item_tva_amount(item)) %></p>
+        <p><%= sprintf("%2.f", ttc_price(item)) %></p>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div>
+  <div>
+    <p>Total HT</p>
+    <p><%= sprintf("%.2f", @bill.items.map { |item| ht_price(item) }.sum) %></p>
+  </div>
+  <% if tva_application? %>
+    <div>
+      <p>Montant total de la TVA</p>
+      <p><%= sprintf("%.2f", bill_tva_amount(@bill)) %></p>
+    </div>
+    <div>
+      <p>Total TTC</p>
+      <p><%= sprintf("%.2f", @bill.total_amount) %></p>
+    </div>
+  <% else %>
+    <p>TVA non applicable, art. 293 B du CGI</p>
+  <% end %>
+</div>
+
+<div>
+  <p>
+    <strong>Délai de paiement :</strong> 30 jours /
+    <strong>Pénalité de retard :</strong> 3 fois le taux légal /
+    <strong>Indemnité forfaitaire pour frais de recouvrement :</strong> 40€ /
+    <strong>Escompte :</strong> Aucun /
+    <strong>Moyen de paiement :</strong> Virement
+  </p>
+</div>

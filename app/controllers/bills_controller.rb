@@ -11,9 +11,9 @@ class BillsController < ApplicationController
     build_bill
     build_client
     build_items
-    @bill.total_amount = @bill.items.sum(:total_price)
+    @bill.total_amount = @bill.items.map { |item| ttc_price(item) }.sum
     if @bill.save
-      redirect_to bill_path(@bill)
+      redirect_to root_path(@bill)
     else
       render :new
     end
@@ -31,6 +31,50 @@ class BillsController < ApplicationController
       end
     end
   end
+
+  def edit
+    @bill = Bill.find(params[:id])
+  end
+
+  def update
+    @bill = Bill.find(params[:id])
+    @bill.update(bill_params)
+  end
+
+  def destroy
+    @bill = Bill.find(params[:id])
+    @bill.destroy
+  end
+
+  def bill_number
+    if bills_of_year.count + 1 < 10
+      @bill.number = "0#{bills_of_year.count + 1}"
+    else
+      @bill.number = "#{bills_of_year.count}"
+    end
+  end
+
+  def ht_price(item)
+    (item.quantity.to_f * item.unit_price.to_f).truncate(2)
+  end
+
+  def tva_application?
+    current_year_amount > 36_800
+  end
+
+  def item_tva_amount(item)
+    ht_price(item) * 0.2
+  end
+
+  def bill_tva_amount(bill)
+    bill.items.map { |item| item_tva_amount(item) }.sum
+  end
+
+  def ttc_price(item)
+    ht_price(item) + tva_amount(item)
+  end
+
+  helper_method :bill_number, :ht_price, :tva_application?, :item_tva_amount, :bill_tva_amount, :ttc_price
 
   private
 
@@ -86,20 +130,7 @@ class BillsController < ApplicationController
         quantity: item_params[:quantity],
         unit_price: item_params[:unit_price]
       )
-      if current_year_amount > 36_800
-        item.total_price = item.quantity.to_f * item.unit_price.to_f * 1.2
-      else
-        item.total_price = item.quantity.to_f * item.unit_price.to_f
-      end
       @bill.items << item if item.name.present?
-    end
-  end
-
-  def bill_number
-    if bills_of_year.count + 1 < 10
-      @bill.number = "0#{bills_of_year.count + 1}"
-    else
-      @bill.number = "#{bills_of_year.count}"
     end
   end
 end
