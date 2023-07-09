@@ -19,6 +19,19 @@ class BillsController < ApplicationController
     end
   end
 
+  def show
+    @bill = Bill.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "F-#{@bill.year}-#{bill_number}",
+               template: 'bills/show',
+               formats: [:html],
+               encoding: 'utf8'
+      end
+    end
+  end
+
   private
 
   def bill_params
@@ -60,11 +73,7 @@ class BillsController < ApplicationController
     @bill.year = Date.today.year
     @bill.emission_date = Date.today
     @bill.due_date = Date.today + 30
-    if bills_of_year.count + 1 < 10
-      @bill.number = "0#{bills_of_year.count + 1}"
-    else
-      @bill.number = "#{bills_of_year.count}"
-    end
+    @bill.number = bills_of_year.count + 1
   end
 
   def build_items
@@ -83,6 +92,14 @@ class BillsController < ApplicationController
         item.total_price = item.quantity.to_f * item.unit_price.to_f
       end
       @bill.items << item if item.name.present?
+    end
+  end
+
+  def bill_number
+    if bills_of_year.count + 1 < 10
+      @bill.number = "0#{bills_of_year.count + 1}"
+    else
+      @bill.number = "#{bills_of_year.count}"
     end
   end
 end
