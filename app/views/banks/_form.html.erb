@@ -1,0 +1,9 @@
+<%= form_with model: @bank do |form| %>
+  <%= form.label "Etablissement bancaire" %>
+  <%= form.text_field :name %>
+  <%= form.label "IBAN" %>
+  <%= form.text_field :iban_number %>
+  <%= form.label "BIC" %>
+  <%= form.text_field :bic_number %>
+  <%= form.submit "Confirmer" %>
+<% end %>
