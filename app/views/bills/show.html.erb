@@ -97,3 +97,23 @@
     <strong>Moyen de paiement :</strong> Virement
   </p>
 </div>
+
+<div>
+  <h3>Détails du paiement</h3>
+  <div>
+    <p>Nom du bénéficiaire</p>
+    <p><%= "EI - #{@bill.user.name.upcase}" %></p>
+  </div>
+  <div>
+    <p>Banque</p>
+    <p><%= @bill.user.bank.name %></p>
+  </div>
+  <div>
+    <p>BIC</p>
+    <p><%= @bill.user.bank.bic_number %></p>
+  </div>
+  <div>
+    <p>IBAN</p>
+    <p><%= @bill.user.bank.iban_number %></p>
+  </div>
+</div>
