@@ -1,0 +1,80 @@
+td {
+  margin-bottom: 0;
+}
+
+.text-light-grey {
+  color: rgb(128, 128, 128);
+}
+
+.bill-informations {
+  width: 40%;
+
+  td {
+    padding-bottom: 5px;
+  }
+}
+
+.bill-amount {
+  width: 50%;
+}
+
+.bill-entities, .bill-items {
+  width: 100%;
+}
+
+.bill-entities, .bill-informations, .bill-amount, h1 {
+  margin-bottom: 40px;
+}
+
+.bill-items {
+  margin-bottom: 20px;
+}
+
+.bill-items-header {
+  background-color: black;
+
+  td {
+    color: white;
+    padding: 5px 10px;
+  }
+}
+
+.bill-items-row {
+  td {
+    padding: 20px 10px;
+    border-bottom: solid 1px rgb(230, 230, 230);
+  }
+}
+
+.bill-amount {
+  margin-left: auto;
+
+  td {
+    padding: 10px;
+  }
+}
+
+.bill-price {
+  background-color: rgb(245, 245, 245);
+}
+
+.bill-conditions, .bill-description {
+  font-size: 15px;
+}
+
+footer {
+  position: absolute;
+  bottom: -99%;
+  left: 0;
+  padding: 20px;
+  background-color: rgb(245, 245, 245);
+
+  table {
+    width: 50%;
+    margin-bottom: 20px;
+  }
+}
+
+.bill-conditions {
+  border-top: solid 1px rgb(200, 200, 200);
+}

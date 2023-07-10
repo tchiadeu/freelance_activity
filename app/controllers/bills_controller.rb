@@ -27,7 +27,8 @@ class BillsController < ApplicationController
         render pdf: "F-#{@bill.year}-#{bill_number}",
                template: 'bills/show',
                formats: [:html],
-               encoding: 'utf8'
+               encoding: 'utf8',
+               layout: 'pdf'
       end
     end
   end
@@ -48,7 +49,7 @@ class BillsController < ApplicationController
 
   def bill_number
     if bills_of_year.count + 1 < 10
-      @bill.number = "0#{bills_of_year.count + 1}"
+      @bill.number = "0#{bills_of_year.count}"
     else
       @bill.number = "#{bills_of_year.count}"
     end

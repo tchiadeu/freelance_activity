@@ -1,119 +1,126 @@
 <h1>Facture</h1>
 
-<div>
-  <div class='flex flex-row justify-between'>
-    <p>Numéro de facture</p>
-    <p><%= "F-#{@bill.year}-#{bill_number}" %></p>
-  </div>
-  <div>
-    <p>Date d'émission</p>
-    <p><%= @bill.emission_date %></p>
-  </div>
-  <div>
-    <p>Date d'exigibilité du paiement</p>
-    <p><%= @bill.due_date %></p>
-  </div>
-</div>
+<table class="bill-informations">
+  <tr>
+    <td><strong>Numéro de facture</strong></td>
+    <td><%= "F-#{@bill.year}-#{bill_number}" %></td>
+  </tr>
+  <tr>
+    <td><strong>Date d'émission</strong></td>
+    <td><%= @bill.emission_date %></td>
+  </tr>
+  <tr>
+    <td><strong>Date d'exigibilité du paiement</strong></td>
+    <td><%= @bill.due_date %></td>
+  </tr>
+</table>
 
-<div>
-  <div>
-    <h3><%= "EI - #{@bill.user.name.upcase}" %></h3>
-    <p><%= @bill.user.address.upcase %></p>
-    <p><%= "#{@bill.user.post_code}, #{@bill.user.city.upcase}" %></p>
-    <p><%= @bill.user.siret_number %></p>
-    <% if tva_application? %>
-      <p><%= @bill.user.tva_number %></p>
-    <% end %>
-    <p><%= @bill.user.email %></p>
-  </div>
-  <div>
-    <h3><%= @bill.client.name.upcase %></h3>
-    <p><%= @bill.client.address.upcase %></p>
-    <p><%= "#{@bill.client.post_code}, #{@bill.client.city.upcase}" %></p>
-    <p><%= @bill.client.siret_number %></p>
-    <% if tva_application? %>
-      <p><%= @bill.client.tva_number %></p>
-    <% end %>
-  </div>
-</div>
-
-<div>
-  <div>
-    <p>Items</p>
-    <p>Unité</p>
-    <p>Qté</p>
-    <p>Prix unitaire</p>
-    <p>Montant HT</p>
-    <% if tva_application? %>
-      <p>TVA (%)</p>
-      <p>Montant de la TVA</p>
-      <p>Montant TTC</p>
-    <% end %>
-  </div>
-  <% @bill.items.each do |item| %>
-    <div>
-      <div>
-        <p><%= item.name %></p>
-        <p><%= item.description %></p>
-      </div>
-      <p><%= item.unity %></p>
-      <p><%= item.quantity %></p>
-      <p><%= sprintf("%.2f", item.unit_price) %></p>
-      <p><%= sprintf("%.2f", ht_price(item)) %></p>
-      <% if tva_application? %>
-        <p>20%</p>
-        <p><%= sprintf("%.2f", item_tva_amount(item)) %></p>
-        <p><%= sprintf("%2.f", ttc_price(item)) %></p>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-
-<div>
-  <div>
-    <p>Total HT</p>
-    <p><%= sprintf("%.2f", @bill.items.map { |item| ht_price(item) }.sum) %></p>
-  </div>
+<table class="bill-entities">
+  <tr>
+    <td><h3><%= "EI - #{@bill.user.name.upcase}" %></h3></td>
+    <td><h3><%= @bill.client.name.upcase %></h3></td>
+  </tr>
+  <tr>
+    <td><%= @bill.user.address.upcase %></td>
+    <td><%= @bill.client.address.upcase %></td>
+  </tr>
+  <tr>
+    <td><%= "#{@bill.user.post_code}, #{@bill.user.city.upcase}" %></td>
+    <td><%= "#{@bill.client.post_code}, #{@bill.client.city.upcase}" %></td>
+  </tr>
+  <tr>
+    <td><%= @bill.user.siret_number %></td>
+    <td><%= @bill.client.siret_number %></td>
+  </tr>
   <% if tva_application? %>
-    <div>
-      <p>Montant total de la TVA</p>
-      <p><%= sprintf("%.2f", bill_tva_amount(@bill)) %></p>
-    </div>
-    <div>
-      <p>Total TTC</p>
-      <p><%= sprintf("%.2f", @bill.total_amount) %></p>
-    </div>
-  <% else %>
-    <p>TVA non applicable, art. 293 B du CGI</p>
+    <tr>
+      <td><%= @bill.user.tva_number %></td>
+      <td><%= @bill.client.tva_number %></td>
+    </tr>
   <% end %>
-</div>
+  <tr>
+    <td><%= @bill.user.email %></td>
+  </tr>
+</table>
 
-<div>
-  <p>
-    <strong>Délai de paiement :</strong> 30 jours /
-    <strong>Pénalité de retard :</strong> 3 fois le taux légal /
-    <strong>Indemnité forfaitaire pour frais de recouvrement :</strong> 40€ /
-    <strong>Escompte :</strong> Aucun /
-    <strong>Moyen de paiement :</strong> Virement
-  </p>
-</div>
+<table class='bill-items'>
+  <tr class='bill-items-header'>
+    <td><strong>Items</strong></td>
+    <td><strong>Unité</strong></td>
+    <td><strong>Qté</strong></td>
+    <td><strong>Prix unitaire</strong></td>
+    <td><strong>Montant HT</strong></td>
+    <% if tva_application? %>
+      <td><strong>TVA (%)</strong></td>
+      <td><strong>Montant de la TVA</strong></td>
+      <td><strong>Montant TTC</strong></td>
+    <% end %>
+  </tr>
+  <% @bill.items.each do |item| %>
+    <tr class="bill-items-row">
+      <td>
+        <span><%= item.name.capitalize %></span>
+        <span class="text-light-grey bill-description"><br><%= item.description %></span>
+      </td>
+      <td><%= item.unity %></td>
+      <td><%= item.quantity %></td>
+      <td><%= sprintf("%.2f", item.unit_price) %> €</td>
+      <td><%= sprintf("%.2f", ht_price(item)) %> €</td>
+      <% if tva_application? %>
+        <td>20%</td>
+        <td><%= sprintf("%.2f", item_tva_amount(item)) %> €</td>
+        <td><%= sprintf("%2.f", ttc_price(item)) %> €</td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
 
-<div>
+<table class="bill-amount">
+  <% if tva_application? %>
+    <tr>
+      <td><strong>Montant total de la TVA</strong></td>
+      <td><%= sprintf("%.2f", bill_tva_amount(@bill)) %> €</td>
+    </tr>
+    <tr>
+      <td><strong>Total TTC</strong></td>
+      <td><%= sprintf("%.2f", @bill.total_amount) %> €</td>
+    </tr>
+  <% else %>
+    <tr class="bill-price">
+      <td><strong>Total HT</strong></td>
+      <td><strong><%= sprintf("%.2f", @bill.items.map { |item| ht_price(item) }.sum) %> €</strong></td>
+    </tr>
+    <td>TVA non applicable, art. 293 B du CGI</td>
+  <% end %>
+</table>
+
+<footer>
   <h3>Détails du paiement</h3>
-  <div>
-    <p>Nom du bénéficiaire</p>
-    <p><%= "EI - #{@bill.user.name.upcase}" %></p>
+  <table>
+    <tr>
+      <td><strong>Nom du bénéficiaire</strong></td>
+      <td><%= "EI - #{@bill.user.name.upcase}" %></td>
+    </tr>
+    <tr>
+      <td><strong>Banque</strong></td>
+      <td><%= @bill.user.bank.name.upcase %></td>
+    </tr>
+    <tr>
+      <td><strong>BIC</strong></td>
+      <td><%= @bill.user.bank.bic_number %></td>
+    </tr>
+    <tr>
+      <td><strong>IBAN</strong></td>
+      <td><%= @bill.user.bank.iban_number %></td>
+    </tr>
+  </table>
+  <div class='bill-conditions'>
+    <p class="text-light-grey">
+      <strong>Délai de paiement :</strong> 30 jours /
+      <strong>Pénalité de retard :</strong> 3 fois le taux légal /
+      <strong>Indemnité forfaitaire pour frais de recouvrement :</strong> 40€ /
+      <strong>Escompte :</strong> Aucun /
+      <strong>Moyen de paiement :</strong> Virement
+    </p>
   </div>
-  <div>
-    <p>Banque</p>
-    <p><%= @bill.user.bank.name %></p>
-  </div>
-  <div>
-    <p>BIC</p>
-    <p><%= @bill.user.bank.bic_number %></p>
-  </div>
-  <div>
-    <p>IBAN</p>
-    <p><%= @bill.user.bank.iban_number %></p>
-  </div>
-</div>
+</footer>
