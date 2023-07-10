@@ -1,42 +1,71 @@
-<div data-controller="items">
+<div data-controller="bill-form">
   <%= form_with model: @bill do |form| %>
 
-    <%= form.select :client, in: current_user.clients.map { |client| client.name } %>
+    <div data-bill-form-target="clientInput">
+      <%= form.fields_for :client do |client_fields| %>
+        <%= client_fields.select :name, data: {bill_form_target: "clientSelected"} do %>
+          <%= current_user.clients.each do |client| %>
+            <%=
+              content_tag :option, client.name,
+              "data-address": client.address,
+              "data-post-code": client.post_code,
+              "data-city": client.city,
+              "data-siret-number": client.siret_number,
+              "data-tva-number": client.tva_number,
+              "data-email": client.email,
+              "data-phone-number": client.phone_number,
+              "data-bill-form-target": "clientsAttributes"
+            %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <button data-action="click->bill-form#clientConfirmation">
+        Confirmer le client
+      </button>
+    </div>
+
+    <button data-bill-form-target="newClientBtn" data-action="click->bill-form#addClient">
+      Ajouter un client
+    </button>
 
     <%= form.fields_for :client do |client_fields| %>
+      <div data-bill-form-target="clientForm" class="hidden">
+        <%= client_fields.label :name, "Nom" %>
+        <%= client_fields.text_field :name %>
 
-      <%= client_fields.label :name, "Nom" %>
-      <%= client_fields.text_field :name %>
+        <%= client_fields.label :address, "Addresse" %>
+        <%= client_fields.text_field :address %>
 
-      <%= client_fields.label :address, "Addresse" %>
-      <%= client_fields.text_field :address %>
+        <%= client_fields.label :post_code, "Code postal" %>
+        <%= client_fields.text_field :post_code %>
 
-      <%= client_fields.label :post_code, "Code postal" %>
-      <%= client_fields.text_field :post_code %>
+        <%= client_fields.label :city, "Ville" %>
+        <%= client_fields.text_field :city %>
 
-      <%= client_fields.label :city, "Ville" %>
-      <%= client_fields.text_field :city %>
+        <%= client_fields.label :siret_number, "SIRET" %>
+        <%= client_fields.text_field :siret_number %>
 
-      <%= client_fields.label :siret_number, "SIRET" %>
-      <%= client_fields.text_field :siret_number %>
+        <%= client_fields.label :tva_number, "Numéro de TVA" %>
+        <%= client_fields.text_field :tva_number %>
 
-      <%= client_fields.label :tva_number, "Numéro de TVA" %>
-      <%= client_fields.text_field :tva_number %>
+        <%= client_fields.label :email, "Email" %>
+        <%= client_fields.text_field :email %>
 
-      <%= client_fields.label :email, "Email" %>
-      <%= client_fields.text_field :email %>
-
-      <%= client_fields.label :phone_number, "Téléphone" %>
-      <%= client_fields.text_field :phone_number %>
-
+        <%= client_fields.label :phone_number, "Téléphone" %>
+        <%= client_fields.text_field :phone_number %>
+      </div>
     <% end %>
 
-    <button data-action="click->items#addItem">
+    <button data-bill-form-target="newClientConfirmation" class="hidden" data-action="click->bill-form#newClientConfirmation">
+      Confirmer le client
+    </button>
+
+    <button data-bill-form-target="newItemBtn" class="hidden" data-action="click->bill-form#addItem">
       Ajouter un article
     </button>
 
     <% 10.times do |i| %>
-      <div class="hidden" data-items-target="items">
+      <div class="hidden" data-bill-form-target="items">
         <%= form.fields_for :item, index: i do |item_fields| %>
 
           <%= item_fields.label :name, "Désignation" %>
@@ -58,6 +87,6 @@
       </div>
     <% end %>
 
-    <%= form.submit "Générer la facture" %>
+    <%= form.submit "Générer la facture", class: "hidden" %>
   <% end %>
 </div>
