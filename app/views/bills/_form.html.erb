@@ -1,92 +1,100 @@
-<div data-controller="bill-form">
-  <%= form_with model: @bill do |form| %>
+<div data-controller="bill-form" class="min-h-full px-6 lg:px-8 container">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Créer une nouvelle facture</h2>
+    <h3 class="text-center text-2x1 leading-9 tracking-tight text-gray-600">Etape 1/2</h3>
+  </div>
 
-    <div data-bill-form-target="clientInput">
-      <%= form.fields_for :client do |client_fields| %>
-        <%= client_fields.select :name, data: {bill_form_target: "clientSelected"} do %>
-          <%= current_user.clients.each do |client| %>
-            <%=
-              content_tag :option, client.name,
-              "data-address": client.address,
-              "data-post-code": client.post_code,
-              "data-city": client.city,
-              "data-siret-number": client.siret_number,
-              "data-tva-number": client.tva_number,
-              "data-email": client.email,
-              "data-phone-number": client.phone_number,
-              "data-bill-form-target": "clientsAttributes"
-            %>
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <%= form_with model: @bill do |form| %>
+
+      <div data-bill-form-target="clientInput" class="flex flex-row">
+        <%= form.fields_for :client do |client_fields| %>
+          <%= client_fields.select :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6", data: {bill_form_target: "clientSelected"} do %>
+            <%= current_user.clients.each do |client| %>
+              <%=
+                content_tag :option, client.name,
+                "data-address": client.address,
+                "data-post-code": client.post_code,
+                "data-city": client.city,
+                "data-siret-number": client.siret_number,
+                "data-tva-number": client.tva_number,
+                "data-email": client.email,
+                "data-phone-number": client.phone_number,
+                "data-bill-form-target": "clientsAttributes"
+              %>
+            <% end %>
           <% end %>
         <% end %>
+        <button data-action="click->bill-form#clientConfirmation" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          Confirmer le client
+        </button>
+      </div>
+
+      <button data-bill-form-target="newClientBtn" data-action="click->bill-form#addClient" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        Ajouter un nouveau client
+      </button>
+
+      <%= form.fields_for :client do |client_fields| %>
+        <div data-bill-form-target="clientForm" class="hidden">
+          <%= client_fields.label :name, "Nom", class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= client_fields.text_field :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+          <%= client_fields.label :address, "Addresse", class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= client_fields.text_field :address, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+          <%= client_fields.label :post_code, "Code postal", class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= client_fields.text_field :post_code, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+          <%= client_fields.label :city, "Ville", class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= client_fields.text_field :city, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+          <%= client_fields.label :siret_number, "SIRET", class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= client_fields.text_field :siret_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+          <%= client_fields.label :tva_number, "Numéro de TVA", class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= client_fields.text_field :tva_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+          <%= client_fields.label :email, "Email", class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= client_fields.text_field :email, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+          <%= client_fields.label :phone_number, "Téléphone", class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= client_fields.text_field :phone_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+        </div>
       <% end %>
-      <button data-action="click->bill-form#clientConfirmation">
+
+      <button data-bill-form-target="newClientConfirmation" class="hidden flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-action="click->bill-form#newClientConfirmation">
         Confirmer le client
       </button>
-    </div>
 
-    <button data-bill-form-target="newClientBtn" data-action="click->bill-form#addClient">
-      Ajouter un client
-    </button>
+      <button data-bill-form-target="newItemBtn" class="hidden flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-action="click->bill-form#addItem">
+        Ajouter un article
+      </button>
 
-    <%= form.fields_for :client do |client_fields| %>
-      <div data-bill-form-target="clientForm" class="hidden">
-        <%= client_fields.label :name, "Nom" %>
-        <%= client_fields.text_field :name %>
+      <% 10.times do |i| %>
+        <div class="hidden" data-bill-form-target="items">
+          <%= form.fields_for :item, index: i do |item_fields| %>
 
-        <%= client_fields.label :address, "Addresse" %>
-        <%= client_fields.text_field :address %>
+            <%= item_fields.label :name, "Désignation", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.text_field :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
-        <%= client_fields.label :post_code, "Code postal" %>
-        <%= client_fields.text_field :post_code %>
+            <%= item_fields.label :description, "Description", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.text_field :description, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
-        <%= client_fields.label :city, "Ville" %>
-        <%= client_fields.text_field :city %>
+            <%= item_fields.label :unity, "Unité", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.select :unity, Item::UNITY, {target_blank: true}, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" %>
 
-        <%= client_fields.label :siret_number, "SIRET" %>
-        <%= client_fields.text_field :siret_number %>
+            <%= item_fields.label :quantity, "Quantité", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.text_field :quantity, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
-        <%= client_fields.label :tva_number, "Numéro de TVA" %>
-        <%= client_fields.text_field :tva_number %>
+            <%= item_fields.label :unit_price, "Prix unitaire", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.text_field :unit_price, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
-        <%= client_fields.label :email, "Email" %>
-        <%= client_fields.text_field :email %>
+          <% end %>
+        </div>
+      <% end %>
 
-        <%= client_fields.label :phone_number, "Téléphone" %>
-        <%= client_fields.text_field :phone_number %>
-      </div>
+      <%= form.submit "Générer la facture", class: "hidden flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
     <% end %>
 
-    <button data-bill-form-target="newClientConfirmation" class="hidden" data-action="click->bill-form#newClientConfirmation">
-      Confirmer le client
-    </button>
-
-    <button data-bill-form-target="newItemBtn" class="hidden" data-action="click->bill-form#addItem">
-      Ajouter un article
-    </button>
-
-    <% 10.times do |i| %>
-      <div class="hidden" data-bill-form-target="items">
-        <%= form.fields_for :item, index: i do |item_fields| %>
-
-          <%= item_fields.label :name, "Désignation" %>
-          <%= item_fields.text_field :name %>
-
-          <%= item_fields.label :description, "Description" %>
-          <%= item_fields.text_field :description %>
-
-          <%= item_fields.label :unity, "Unité" %>
-          <%= item_fields.select :unity, in: Item::UNITY %>
-
-          <%= item_fields.label :quantity, "Quantité" %>
-          <%= item_fields.text_field :quantity %>
-
-          <%= item_fields.label :unit_price, "Prix unitaire" %>
-          <%= item_fields.text_field :unit_price %>
-
-        <% end %>
-      </div>
-    <% end %>
-
-    <%= form.submit "Générer la facture", class: "hidden" %>
-  <% end %>
+  </div>
 </div>
