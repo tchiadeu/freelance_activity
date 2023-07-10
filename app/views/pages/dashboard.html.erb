@@ -1,8 +1,0 @@
-<%= link_to "Nouvelle facture", new_bill_path %>
-<% @bills.each do |bill| %>
-  <div>
-    <%= link_to bill.number, bill_path(bill, format: :pdf), target: "_blank" %>
-    <%= link_to "Modifier", edit_bill_path(bill) %>
-    <%= link_to "Supprimer", bill_path(bill), method: :delete, data: { confirm: "Êtes vous sûr ?" } %>
-  </div>
-<% end %>
