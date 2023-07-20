@@ -86,7 +86,7 @@
       <td><%= sprintf("%.2f", @bill.total_amount) %> €</td>
     </tr>
   <% else %>
-    <tr class="bill-price">
+    <tr>
       <td><strong>Total HT</strong></td>
       <td><strong><%= sprintf("%.2f", @bill.items.map { |item| ht_price(item) }.sum) %> €</strong></td>
     </tr>

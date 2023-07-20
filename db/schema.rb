@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_09_182422) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_20_091100) do
   create_table "banks", force: :cascade do |t|
     t.string "name"
     t.string "bic_number"
@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_09_182422) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "taxes", default: false
     t.index ["client_id"], name: "index_bills_on_client_id"
     t.index ["user_id"], name: "index_bills_on_user_id"
   end

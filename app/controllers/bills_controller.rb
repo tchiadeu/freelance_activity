@@ -12,10 +12,10 @@ class BillsController < ApplicationController
     build_client
     build_items
     @bill.total_amount = @bill.items.map { |item| ttc_price(item) }.sum
-    if @bill.save
+    if @bill.save!
       redirect_to root_path(@bill)
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -44,15 +44,19 @@ class BillsController < ApplicationController
 
   def destroy
     @bill = Bill.find(params[:id])
-    @bill.destroy
+    if @bill.destroy
+      redirect_to root_path
+    else
+      render :show, status: :see_other
+    end
   end
 
   def bill_number
-    if bills_of_year.count + 1 < 10
-      @bill.number = "0#{bills_of_year.count}"
-    else
-      @bill.number = "#{bills_of_year.count}"
-    end
+    @bill.number = if bills_of_year.count + 1 < 10
+                     "0#{bills_of_year.count}"
+                   else
+                     bills_of_year.count.to_s
+                   end
   end
 
   def ht_price(item)
@@ -60,7 +64,7 @@ class BillsController < ApplicationController
   end
 
   def tva_application?
-    current_year_amount > 36_800
+    current_year_amount >= 36_800
   end
 
   def item_tva_amount(item)
@@ -72,20 +76,12 @@ class BillsController < ApplicationController
   end
 
   def ttc_price(item)
-    ht_price(item) + tva_amount(item)
+    ht_price(item) + item_tva_amount(item)
   end
 
   helper_method :bill_number, :ht_price, :tva_application?, :item_tva_amount, :bill_tva_amount, :ttc_price
 
   private
-
-  def bill_params
-    params.require(:bill).permit(
-      :number, :total_amount, :payed, :year, :month, :emission_date, :due_date,
-      client_attributes: %i[name address post_code city siret_number tva_number email phone_number],
-      items_attributes: %i[name description unity quantity unit_price total_price]
-    )
-  end
 
   def bills_of_year
     Bill.where(year: @bill.year, user: current_user)
@@ -107,7 +103,7 @@ class BillsController < ApplicationController
       phone_number: params[:bill][:client_attributes][:phone_number]
     )
     client.user = current_user
-    client.save
+    client.save!
     @bill.client = client
   end
 
@@ -133,5 +129,13 @@ class BillsController < ApplicationController
       )
       @bill.items << item if item.name.present?
     end
+  end
+
+  def bill_params
+    params.require(:bill).permit(
+      :number, :total_amount, :payed, :year, :month, :emission_date, :due_date,
+      client_attributes: %i[name address post_code city siret_number tva_number email phone_number],
+      items_attributes: %i[name description unity quantity unit_price total_price]
+    )
   end
 end

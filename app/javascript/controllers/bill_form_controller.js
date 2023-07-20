@@ -1,7 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "items", "clientInput", "clientsAttributes", "clientForm", "newItemBtn", "newClientBtn", "newClientConfirmation" ]
+  static targets = [
+    "items", "clientInput", "clientsAttributes", "clientForm", "newItemBtn", "newClientBtn",
+    "newClientConfirmation", "submit"
+  ]
   currentIndex = -1
 
   addItem(event) {
@@ -47,6 +50,7 @@ export default class extends Controller {
     this.newItemBtnTarget.classList.remove("hidden")
     this.newClientBtnTarget.classList.add("hidden")
     this.clientInputTarget.classList.add("hidden")
+    this.submitTarget.classList.remove("hidden")
   }
 
   addClient(event) {
@@ -61,5 +65,6 @@ export default class extends Controller {
     event.preventDefault()
     event.currentTarget.classList.add("hidden")
     this.newItemBtnTarget.classList.remove("hidden")
+    this.submitTarget.classList.remove("hidden")
   }
 }
