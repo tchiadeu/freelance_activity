@@ -3,7 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [
     "items", "clientInput", "clientsAttributes", "clientForm", "newItemBtn", "newClientBtn",
-    "newClientConfirmation", "submit"
+    "newClientConfirmation", "submit", "clientName", "clientAddress", "clientPostCode", "step",
+    "clientCity", "clientSiretNumber", "clientTvaNumber", "clientEmail", "clientPhoneNumber"
   ]
   currentIndex = -1
 
@@ -26,24 +27,14 @@ export default class extends Controller {
         const tvaNumber = element.dataset.tvaNumber
         const email = element.dataset.email
         const phoneNumber = element.dataset.phoneNumber
-        this.clientFormTarget.innerHTML = `
-         <label for="bill_client_attributes_name">Nom</label>
-         <input id="bill_client_attributes_name" name="bill[client_attributes][name]" type="text" value="${clientSelected.value}">
-         <label for="bill_client_attributes_address">Address</label>
-         <input id="bill_client_attributes_name" name="bill[client_attributes][name]" type="text" value="${address}">
-         <label for="bill_client_attributes_post_code">Code Postal</label>
-         <input id="bill_client_attributes_name" name="bill[client_attributes][name]" type="text" value="${postCode}">
-         <label for="bill_client_attributes_city">Ville</label>
-         <input id="bill_client_attributes_name" name="bill[client_attributes][name]" type="text" value="${city}">
-         <label for="bill_client_attributes_siret_number">SIRET</label>
-         <input id="bill_client_attributes_name" name="bill[client_attributes][name]" type="text" value="${siretNumber}">
-         <label for="bill_client_attributes_tva_number">Numéro de TVA</label>
-         <input id="bill_client_attributes_name" name="bill[client_attributes][name]" type="text" value="${tvaNumber}">
-         <label for="bill_client_attributes_email">Email</label>
-         <input id="bill_client_attributes_name" name="bill[client_attributes][name]" type="text" value="${email}">
-         <label for="bill_client_attributes_phone_number">Téléphone</label>
-         <input id="bill_client_attributes_name" name="bill[client_attributes][name]" type="text" value="${phoneNumber}">
-        `
+        this.clientNameTarget.setAttribute("value", clientSelected.value)
+        this.clientAddressTarget.setAttribute("value", address)
+        this.clientPostCodeTarget.setAttribute("value", postCode)
+        this.clientCityTarget.setAttribute("value", city)
+        this.clientSiretNumberTarget.setAttribute("value", siretNumber)
+        this.clientTvaNumberTarget.setAttribute("value", tvaNumber)
+        this.clientEmailTarget.setAttribute("value", email)
+        this.clientPhoneNumberTarget.setAttribute("value", phoneNumber)
       }
     })
     this.clientFormTarget.classList.remove("hidden")
@@ -51,6 +42,7 @@ export default class extends Controller {
     this.newClientBtnTarget.classList.add("hidden")
     this.clientInputTarget.classList.add("hidden")
     this.submitTarget.classList.remove("hidden")
+    this.stepTarget.innerText = "Etape 2/2"
   }
 
   addClient(event) {
@@ -66,5 +58,6 @@ export default class extends Controller {
     event.currentTarget.classList.add("hidden")
     this.newItemBtnTarget.classList.remove("hidden")
     this.submitTarget.classList.remove("hidden")
+    this.stepTarget.innerText = "Etape 2/2"
   }
 }

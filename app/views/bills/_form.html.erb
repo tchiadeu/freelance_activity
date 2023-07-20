@@ -1,15 +1,15 @@
 <div data-controller="bill-form" class="min-h-full px-6 lg:px-8 container">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Créer une nouvelle facture</h2>
-    <h3 class="text-center text-2x1 leading-9 tracking-tight text-gray-600">Etape 1/2</h3>
+    <h3 class="text-center text-2x1 leading-9 tracking-tight text-gray-600" data-bill-form-target="step">Etape 1/2</h3>
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <%= form_with model: @bill do |form| %>
 
       <div data-bill-form-target="clientInput" class="flex flex-row">
-        <%= form.fields_for :client do |client_fields| %>
-          <%= client_fields.select :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6", data: {bill_form_target: "clientSelected"} do %>
+        <%= form.fields_for :client do |client_select| %>
+          <%= client_select.select :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6", data: {bill_form_target: "clientSelected"} do %>
             <%= current_user.clients.each do |client| %>
               <%=
                 content_tag :option, client.name,
@@ -37,28 +37,52 @@
       <%= form.fields_for :client do |client_fields| %>
         <div data-bill-form-target="clientForm" class="hidden">
           <%= client_fields.label :name, "Nom", class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= client_fields.text_field :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%=
+            client_fields.text_field :name, data: {bill_form_target: "clientName"},
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          %>
 
           <%= client_fields.label :address, "Addresse", class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= client_fields.text_field :address, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%=
+            client_fields.text_field :address, data: {bill_form_target: "clientAddress"},
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          %>
 
           <%= client_fields.label :post_code, "Code postal", class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= client_fields.text_field :post_code, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%=
+            client_fields.text_field :post_code, data: {bill_form_target: "clientPostCode"},
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          %>
 
           <%= client_fields.label :city, "Ville", class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= client_fields.text_field :city, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%=
+            client_fields.text_field :city, data: {bill_form_target: "clientCity"},
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          %>
 
           <%= client_fields.label :siret_number, "SIRET", class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= client_fields.text_field :siret_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%=
+            client_fields.text_field :siret_number, data: {bill_form_target: "clientSiretNumber"},
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          %>
 
           <%= client_fields.label :tva_number, "Numéro de TVA", class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= client_fields.text_field :tva_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%=
+            client_fields.text_field :tva_number, data: {bill_form_target: "clientTvaNumber"},
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          %>
 
           <%= client_fields.label :email, "Email", class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= client_fields.text_field :email, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%=
+            client_fields.text_field :email, data: {bill_form_target: "clientEmail"},
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          %>
 
           <%= client_fields.label :phone_number, "Téléphone", class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= client_fields.text_field :phone_number, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%=
+            client_fields.text_field :phone_number, data: {bill_form_target: "clientPhoneNumber"},
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          %>
         </div>
       <% end %>
 
@@ -81,7 +105,7 @@
             <%= item_fields.text_field :description, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
             <%= item_fields.label :unity, "Unité", class: "block text-sm font-medium leading-6 text-gray-900" %>
-            <%= item_fields.select :unity, Item::UNITY, {target_blank: true}, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" %>
+            <%= item_fields.select :unity, Item::UNITY, {include_blank: true}, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" %>
 
             <%= item_fields.label :quantity, "Quantité", class: "block text-sm font-medium leading-6 text-gray-900" %>
             <%= item_fields.text_field :quantity, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
