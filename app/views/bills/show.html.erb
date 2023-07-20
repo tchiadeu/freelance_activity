@@ -32,7 +32,7 @@
     <td><%= @bill.user.siret_number %></td>
     <td><%= @bill.client.siret_number %></td>
   </tr>
-  <% if tva_application? %>
+  <% if @bill.taxes %>
     <tr>
       <td><%= @bill.user.tva_number %></td>
       <td><%= @bill.client.tva_number %></td>
@@ -50,7 +50,7 @@
     <td><strong>Qté</strong></td>
     <td><strong>Prix unitaire</strong></td>
     <td><strong>Montant HT</strong></td>
-    <% if tva_application? %>
+    <% if @bill.taxes %>
       <td><strong>TVA (%)</strong></td>
       <td><strong>Montant de la TVA</strong></td>
       <td><strong>Montant TTC</strong></td>
@@ -66,7 +66,7 @@
       <td><%= item.quantity %></td>
       <td><%= sprintf("%.2f", item.unit_price) %> €</td>
       <td><%= sprintf("%.2f", ht_price(item)) %> €</td>
-      <% if tva_application? %>
+      <% if @bill.taxes %>
         <td>20%</td>
         <td><%= sprintf("%.2f", item_tva_amount(item)) %> €</td>
         <td><%= sprintf("%2.f", ttc_price(item)) %> €</td>
@@ -76,7 +76,7 @@
 </table>
 
 <table class="bill-amount">
-  <% if tva_application? %>
+  <% if @bill.taxes %>
     <tr>
       <td><strong>Montant total de la TVA</strong></td>
       <td><%= sprintf("%.2f", bill_tva_amount(@bill)) %> €</td>

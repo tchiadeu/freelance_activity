@@ -63,10 +63,6 @@ class BillsController < ApplicationController
     (item.quantity.to_f * item.unit_price.to_f).truncate(2)
   end
 
-  def tva_application?
-    current_year_amount >= 36_800
-  end
-
   def item_tva_amount(item)
     ht_price(item) * 0.2
   end
@@ -79,7 +75,7 @@ class BillsController < ApplicationController
     ht_price(item) + item_tva_amount(item)
   end
 
-  helper_method :bill_number, :ht_price, :tva_application?, :item_tva_amount, :bill_tva_amount, :ttc_price
+  helper_method :bill_number, :ht_price, :item_tva_amount, :bill_tva_amount, :ttc_price
 
   private
 
@@ -115,6 +111,7 @@ class BillsController < ApplicationController
     @bill.emission_date = Date.today
     @bill.due_date = Date.today + 30
     @bill.number = bills_of_year.count + 1
+    @bill.taxes = true if current_year_amount >= 36_800
   end
 
   def build_items
