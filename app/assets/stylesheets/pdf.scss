@@ -52,6 +52,10 @@ td {
   td {
     padding: 10px;
   }
+
+  .bill-amount-background {
+    background-color: rgb(245, 245, 245);
+  }
 }
 
 .bill-conditions, .bill-description {
@@ -59,9 +63,6 @@ td {
 }
 
 footer {
-  // position: fixed;
-  // top: 100%;
-  // left: 0;
   padding: 20px;
   background-color: rgb(245, 245, 245);
 

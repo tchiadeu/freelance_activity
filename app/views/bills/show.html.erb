@@ -81,12 +81,12 @@
       <td><strong>Montant total de la TVA</strong></td>
       <td><%= sprintf("%.2f", bill_tva_amount(@bill)) %> €</td>
     </tr>
-    <tr>
+    <tr class="bill-amount-background">
       <td><strong>Total TTC</strong></td>
       <td><%= sprintf("%.2f", @bill.total_amount) %> €</td>
     </tr>
   <% else %>
-    <tr>
+    <tr class="bill-amount-background">
       <td><strong>Total HT</strong></td>
       <td><strong><%= sprintf("%.2f", @bill.items.map { |item| ht_price(item) }.sum) %> €</strong></td>
     </tr>
