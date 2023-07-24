@@ -85,19 +85,19 @@ class BillsController < ApplicationController
   end
 
   def build_client
-    client = Client.new(
-      name: params[:bill][:client_attributes][:name],
-      address: params[:bill][:client_attributes][:address],
-      post_code: params[:bill][:client_attributes][:post_code],
-      city: params[:bill][:client_attributes][:city],
-      siret_number: params[:bill][:client_attributes][:siret_number],
-      tva_number: params[:bill][:client_attributes][:tva_number],
-      email: params[:bill][:client_attributes][:email],
-      phone_number: params[:bill][:client_attributes][:phone_number]
-    )
-    client.user = current_user
-    client.save!
-    @bill.client = client
+    if params[:bill][:client_attributes][:name].present?
+      client = Client.find_or_initialize_by(name: params[:bill][:client_attributes][:name])
+      client.address = params[:bill][:client_attributes][:address]
+      client.post_code = params[:bill][:client_attributes][:post_code]
+      client.city = params[:bill][:client_attributes][:city]
+      client.siret_number = params[:bill][:client_attributes][:siret_number]
+      client.tva_number = params[:bill][:client_attributes][:tva_number]
+      client.email = params[:bill][:client_attributes][:email]
+      client.phone_number = params[:bill][:client_attributes][:phone_number]
+      client.user = current_user
+      client.save!
+      @bill.client = client
+    end
   end
 
   def build_bill
