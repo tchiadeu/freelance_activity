@@ -4,7 +4,8 @@ export default class extends Controller {
   static targets = [
     "items", "clientInput", "clientsAttributes", "clientForm", "newItemBtn", "newClientBtn",
     "newClientConfirmation", "submit", "clientName", "clientAddress", "clientPostCode", "step",
-    "clientCity", "clientSiretNumber", "clientTvaNumber", "clientEmail", "clientPhoneNumber"
+    "clientCity", "clientSiretNumber", "clientTvaNumber", "clientEmail", "clientPhoneNumber",
+    "formContainer", "instructions"
   ]
   currentIndex = -1
 
@@ -43,6 +44,10 @@ export default class extends Controller {
     this.clientInputTarget.classList.add("hidden")
     this.submitTarget.classList.remove("hidden")
     this.stepTarget.innerText = "Etape 2/2"
+    this.formContainerTarget.classList.remove("sm:max-w-sm")
+    this.instructionsTargets.forEach((instruction) => {
+      instruction.classList.add("hidden")
+    })
   }
 
   addClient(event) {
@@ -51,6 +56,9 @@ export default class extends Controller {
     this.clientInputTarget.classList.add("hidden")
     this.clientFormTarget.classList.remove("hidden")
     this.newClientConfirmationTarget.classList.remove("hidden")
+    this.instructionsTargets.forEach((instruction) => {
+      instruction.classList.add("hidden")
+    })
   }
 
   newClientConfirmation(event) {
@@ -59,5 +67,6 @@ export default class extends Controller {
     this.newItemBtnTarget.classList.remove("hidden")
     this.submitTarget.classList.remove("hidden")
     this.stepTarget.innerText = "Etape 2/2"
+    this.formContainerTarget.classList.remove("sm:max-w-sm")
   }
 }

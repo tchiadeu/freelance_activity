@@ -1,5 +1,5 @@
 class Item < ApplicationRecord
-  UNITY = %w[heure jour].freeze
+  UNITY = %w[unité heure jour].freeze
 
   belongs_to :bill
 
