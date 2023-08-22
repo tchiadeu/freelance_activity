@@ -4,10 +4,6 @@ class PagesController < ApplicationController
   def dashboard
   end
 
-  def clients
-    @clients = Client.where(user: current_user)
-  end
-
   def administrative
     @bills = Bill.where(user: current_user)
   end

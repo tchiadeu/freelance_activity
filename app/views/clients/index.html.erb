@@ -1,0 +1,22 @@
+<div class="flex flex-col">
+  <div>
+    <% @clients.each do |client| %>
+      <%= client.name %>
+    <% end %>
+  </div>
+  <div class="separation-bar"></div>
+  <div>
+    <table class="border-2 border-solid border-black">
+      <tr>
+        <th>Nom et prénom</th>
+        <th>Point de rencontre</th>
+        <th>Relation pro / perso / les deux</th>
+        <th>Niveau de proximité /10</th>
+        <th>Pouvoir /10</th>
+        <th>Pouvoir de son réseau /10</th>
+        <th>Secteur</th>
+        <th>Ville</th>
+      </tr>
+    </table>
+  </div>
+</div>
