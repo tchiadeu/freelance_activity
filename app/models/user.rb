@@ -7,4 +7,5 @@ class User < ApplicationRecord
   has_many :clients
   has_many :bills
   has_one :bank
+  has_many :prospects
 end

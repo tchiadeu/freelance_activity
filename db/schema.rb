@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_23_151117) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_23_160722) do
   create_table "banks", force: :cascade do |t|
     t.string "name"
     t.string "bic_number"
@@ -70,7 +70,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_151117) do
     t.string "place_of_knowledge"
     t.string "relation_type"
     t.integer "proximity_level"
-    t.integer "power"
     t.integer "network_power"
     t.integer "activity_area"
     t.string "city"

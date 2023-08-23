@@ -22,8 +22,8 @@ class ProspectsController < ApplicationController
 
   def prospect_params
     params.require(:prospect).permit(
-      :name, :place_of_knowledge, :relation_type, :proximity_level, :power, :network_power,
-      :activity_area, :city, :contacted, :called, :signed
+      :name, :place_of_knowledge, :relation_type, :proximity_level, :network_power,
+      :activity_area, :city, :contacted, :called, :signed, :user_id
     )
   end
 end
