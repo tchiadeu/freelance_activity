@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources 'clients'
   resources 'bills', only: %i[show new create edit update destroy]
   resources 'banks', only: %i[new create edit update destroy]
+  resources 'prospects', only: %i[index new create edit update destroy]
 end
