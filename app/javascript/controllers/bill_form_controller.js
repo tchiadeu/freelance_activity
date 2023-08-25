@@ -5,7 +5,7 @@ export default class extends Controller {
     "items", "clientInput", "clientsAttributes", "clientForm", "newItemBtn", "newClientBtn",
     "newClientConfirmation", "submit", "clientName", "clientAddress", "clientPostCode", "step",
     "clientCity", "clientSiretNumber", "clientTvaNumber", "clientEmail", "clientPhoneNumber",
-    "formContainer", "instructions"
+    "formContainer", "instructions", "itemsColumn", "clientColumnTitle"
   ]
   currentIndex = -1
 
@@ -13,7 +13,6 @@ export default class extends Controller {
     event.preventDefault()
     this.currentIndex++
     this.itemsTargets[this.currentIndex].classList.remove("hidden")
-    event.currentTarget.innerText = "Ajouter un autre article"
   }
 
   clientConfirmation(event) {
@@ -40,10 +39,10 @@ export default class extends Controller {
     })
     this.clientFormTarget.classList.remove("hidden")
     this.newItemBtnTarget.classList.remove("hidden")
+    this.itemsColumnTarget.classList.remove("hidden")
     this.newClientBtnTarget.classList.add("hidden")
     this.clientInputTarget.classList.add("hidden")
-    this.submitTarget.classList.remove("hidden")
-    this.stepTarget.innerText = "Etape 2/2"
+    this.clientColumnTitleTarget.innerText = "Client ajouté"
     this.formContainerTarget.classList.remove("sm:max-w-sm")
     this.instructionsTargets.forEach((instruction) => {
       instruction.classList.add("hidden")
@@ -65,8 +64,8 @@ export default class extends Controller {
     event.preventDefault()
     event.currentTarget.classList.add("hidden")
     this.newItemBtnTarget.classList.remove("hidden")
-    this.submitTarget.classList.remove("hidden")
-    this.stepTarget.innerText = "Etape 2/2"
     this.formContainerTarget.classList.remove("sm:max-w-sm")
+    this.itemsColumnTarget.classList.remove("hidden")
+    this.clientColumnTitleTarget.innerText = "Client ajouté"
   }
 }
