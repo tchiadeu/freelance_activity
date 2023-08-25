@@ -72,7 +72,27 @@ class BillsController < ApplicationController
     ht_price(item) + item_tva_amount(item)
   end
 
-  helper_method :bill_number, :ht_price, :item_tva_amount, :bill_tva_amount, :ttc_price
+  def clients_proposition(clients)
+    propositions = ['']
+    clients.each do |client|
+      propositions << [
+        client.name,
+        data: {
+          address: client.address,
+          post_code: client.post_code,
+          city: client.city,
+          siret_number: client.siret_number,
+          tva_number: client.tva_number,
+          email: client.email,
+          phone_number: client.phone_number,
+          bill_form_target: 'clientsAttributes'
+        }
+      ]
+    end
+    propositions
+  end
+
+  helper_method :bill_number, :ht_price, :item_tva_amount, :bill_tva_amount, :ttc_price, :clients_proposition
 
   private
 

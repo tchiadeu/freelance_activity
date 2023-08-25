@@ -9,118 +9,127 @@
 
       <p data-bill-form-target="instructions" class="flex justify-center my-5"><strong>Sélectionner parmi les clients existants</strong></p>
 
-      <div data-bill-form-target="clientInput" class="flex flex-row gap-5 mb-5">
+      <div data-bill-form-target="clientInput" class="flex flex-col gap-5 mb-5">
         <%= form.fields_for :client do |client_select| %>
-          <%= client_select.select :name, data: {bill_form_target: "clientSelected"} do %>
-            <%= current_user.clients.each do |client| %>
-              <%=
-                content_tag :option, client.name,
-                "data-address": client.address,
-                "data-post-code": client.post_code,
-                "data-city": client.city,
-                "data-siret-number": client.siret_number,
-                "data-tva-number": client.tva_number,
-                "data-email": client.email,
-                "data-phone-number": client.phone_number,
-                "data-bill-form-target": "clientsAttributes"
-              %>
-            <% end %>
-          <% end %>
+          <%=
+            client_select.select :name,
+            options_for_select(clients_proposition(current_user.clients)), {},
+            class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6",
+            data: {bill_form_target: "clientSelected"}
+          %>
         <% end %>
-        <button data-action="click->bill-form#clientConfirmation" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        <button data-action="click->bill-form#clientConfirmation" class="w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
           Confirmer le client
         </button>
       </div>
 
       <p data-bill-form-target="instructions" class="flex justify-center mb-5"><strong>Votre client ne fait pas parti de la liste ?</strong></p>
 
-      <button data-bill-form-target="newClientBtn" data-action="click->bill-form#addClient" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+      <button data-bill-form-target="newClientBtn" data-action="click->bill-form#addClient" class="w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
         Ajouter un nouveau client
       </button>
-      <div class="flex flex-row justify-between">
-        <%= form.fields_for :client do |client_fields| %>
-          <div data-bill-form-target="clientForm" class="hidden">
+
+      <%= form.fields_for :client do |client_fields| %>
+        <div data-bill-form-target="clientForm" class="hidden mb-4 flex flex-col items-center">
+          <p class="my-4 leading-6 text-gray-900 font-medium underline">Ajout d'un nouveau client</p>
+
+          <div class="w-4/5">
             <%= client_fields.label :name, "Nom", class: "block text-sm font-medium leading-6 text-gray-900" %>
             <%=
               client_fields.text_field :name, data: {bill_form_target: "clientName"},
               class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             %>
+          </div>
 
+          <div class="w-4/5">
             <%= client_fields.label :address, "Addresse", class: "block text-sm font-medium leading-6 text-gray-900" %>
             <%=
               client_fields.text_field :address, data: {bill_form_target: "clientAddress"},
               class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             %>
+          </div>
 
+          <div class="w-4/5">
             <%= client_fields.label :post_code, "Code postal", class: "block text-sm font-medium leading-6 text-gray-900" %>
             <%=
               client_fields.text_field :post_code, data: {bill_form_target: "clientPostCode"},
               class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             %>
+          </div>
 
+          <div class="w-4/5">
             <%= client_fields.label :city, "Ville", class: "block text-sm font-medium leading-6 text-gray-900" %>
             <%=
               client_fields.text_field :city, data: {bill_form_target: "clientCity"},
               class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             %>
+          </div>
 
+          <div class="w-4/5">
             <%= client_fields.label :siret_number, "SIRET", class: "block text-sm font-medium leading-6 text-gray-900" %>
             <%=
               client_fields.text_field :siret_number, data: {bill_form_target: "clientSiretNumber"},
               class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             %>
+          </div>
 
+          <div class="w-4/5">
             <%= client_fields.label :tva_number, "Numéro de TVA", class: "block text-sm font-medium leading-6 text-gray-900" %>
             <%=
               client_fields.text_field :tva_number, data: {bill_form_target: "clientTvaNumber"},
               class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             %>
+          </div>
 
+          <div class="w-4/5">
             <%= client_fields.label :email, "Email", class: "block text-sm font-medium leading-6 text-gray-900" %>
             <%=
               client_fields.text_field :email, data: {bill_form_target: "clientEmail"},
               class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             %>
+          </div>
 
+          <div class="w-4/5">
             <%= client_fields.label :phone_number, "Téléphone", class: "block text-sm font-medium leading-6 text-gray-900" %>
             <%=
               client_fields.text_field :phone_number, data: {bill_form_target: "clientPhoneNumber"},
               class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             %>
           </div>
-        <% end %>
-
-        <button data-bill-form-target="newClientConfirmation" class="hidden flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-action="click->bill-form#newClientConfirmation">
+        </div>
+      <% end %>
+      <div class="w-full flex justify-center">
+        <button data-bill-form-target="newClientConfirmation" class="hidden w-4/5 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-action="click->bill-form#newClientConfirmation">
           Confirmer le client
         </button>
-
-        <button data-bill-form-target="newItemBtn" class="hidden flex w-50 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-action="click->bill-form#addItem">
-          Ajouter un article
-        </button>
-
-        <% 10.times do |i| %>
-          <div class="hidden" data-bill-form-target="items">
-            <%= form.fields_for :item, index: i do |item_fields| %>
-
-              <%= item_fields.label :name, "Désignation", class: "block text-sm font-medium leading-6 text-gray-900" %>
-              <%= item_fields.text_field :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-
-              <%= item_fields.label :description, "Description", class: "block text-sm font-medium leading-6 text-gray-900" %>
-              <%= item_fields.text_field :description, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-
-              <%= item_fields.label :unity, "Unité", class: "block text-sm font-medium leading-6 text-gray-900" %>
-              <%= item_fields.select :unity, Item::UNITY, {include_blank: true}, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" %>
-
-              <%= item_fields.label :quantity, "Quantité", class: "block text-sm font-medium leading-6 text-gray-900" %>
-              <%= item_fields.text_field :quantity, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-
-              <%= item_fields.label :unit_price, "Prix unitaire", class: "block text-sm font-medium leading-6 text-gray-900" %>
-              <%= item_fields.text_field :unit_price, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-
-            <% end %>
-          </div>
-        <% end %>
       </div>
+
+      <button data-bill-form-target="newItemBtn" class="hidden flex w-50 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-action="click->bill-form#addItem">
+        Ajouter un article
+      </button>
+
+      <% 10.times do |i| %>
+        <div class="hidden" data-bill-form-target="items">
+          <%= form.fields_for :item, index: i do |item_fields| %>
+
+            <%= item_fields.label :name, "Désignation", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.text_field :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+            <%= item_fields.label :description, "Description", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.text_field :description, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+            <%= item_fields.label :unity, "Unité", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.select :unity, Item::UNITY, {include_blank: true}, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" %>
+
+            <%= item_fields.label :quantity, "Quantité", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.text_field :quantity, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+            <%= item_fields.label :unit_price, "Prix unitaire", class: "block text-sm font-medium leading-6 text-gray-900" %>
+            <%= item_fields.text_field :unit_price, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+
+          <% end %>
+        </div>
+      <% end %>
 
       <%= form.submit "Générer la facture", data: {bill_form_target: "submit"}, class: "hidden flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
     <% end %>
