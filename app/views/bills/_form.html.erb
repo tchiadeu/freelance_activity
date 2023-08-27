@@ -1,6 +1,6 @@
 <div data-controller="bill-form" class="min-h-full px-6 lg:px-8 flex flex-col items-center w-full gap-4">
   <h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Créer une nouvelle facture</h2>
-
+  <p data-bill-form-target="finalText" class="hidden mt-4 leading-6 text-gray-900 font-medium underline">Toutes les étapes sont finalisées</p>
   <div data-bill-form-target="formContainer" class="sm:mx-auto sm:w-full sm:max-w-sm w-fit flex flex-col items-center">
     <%= form_with model: @bill do |form| %>
 
@@ -26,165 +26,171 @@
         Ajouter un nouveau client
       </button>
 
-      <div class="w-full flex justify-between">
-        <div class="w-full">
-          <%= form.fields_for :client do |client_fields| %>
-            <div data-bill-form-target="clientForm" class="hidden mb-4 flex flex-col items-center">
-              <p data-bill-form-target="clientColumnTitle" class="my-4 leading-6 text-gray-900 font-medium underline">Ajout d'un nouveau client</p>
+      <div class="w-full">
+        <%= form.fields_for :client do |client_fields| %>
+          <div data-bill-form-target="clientForm" class="hidden mb-4 flex flex-col items-center">
+            <p data-bill-form-target="clientColumnTitle" class="my-4 leading-6 text-gray-900 font-medium underline">Ajout d'un nouveau client</p>
 
-              <div class="w-full">
-                <%= client_fields.label :name, "Nom", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%=
-                  client_fields.text_field :name, data: {bill_form_target: "clientName"},
-                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                %>
-              </div>
-
-              <div class="w-full">
-                <%= client_fields.label :address, "Addresse", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%=
-                  client_fields.text_field :address, data: {bill_form_target: "clientAddress"},
-                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                %>
-              </div>
-
-              <div class="w-full">
-                <%= client_fields.label :post_code, "Code postal", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%=
-                  client_fields.text_field :post_code, data: {bill_form_target: "clientPostCode"},
-                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                %>
-              </div>
-
-              <div class="w-full">
-                <%= client_fields.label :city, "Ville", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%=
-                  client_fields.text_field :city, data: {bill_form_target: "clientCity"},
-                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                %>
-              </div>
-
-              <div class="w-full">
-                <%= client_fields.label :siret_number, "SIRET", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%=
-                  client_fields.text_field :siret_number, data: {bill_form_target: "clientSiretNumber"},
-                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                %>
-              </div>
-
-              <div class="w-full">
-                <%= client_fields.label :tva_number, "Numéro de TVA", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%=
-                  client_fields.text_field :tva_number, data: {bill_form_target: "clientTvaNumber"},
-                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                %>
-              </div>
-
-              <div class="w-full">
-                <%= client_fields.label :email, "Email", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%=
-                  client_fields.text_field :email, data: {bill_form_target: "clientEmail"},
-                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                %>
-              </div>
-
-              <div class="w-full">
-                <%= client_fields.label :phone_number, "Téléphone", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%=
-                  client_fields.text_field :phone_number, data: {bill_form_target: "clientPhoneNumber"},
-                  class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                %>
-              </div>
+            <div class="w-full">
+              <%= client_fields.label :name, "Nom", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%=
+                client_fields.text_field :name, data: {bill_form_target: "clientName"},
+                class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              %>
             </div>
-          <% end %>
-          <div class="w-full flex justify-center">
-            <button data-bill-form-target="newClientConfirmation" class="hidden w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-action="click->bill-form#newClientConfirmation">
-              Confirmer le client
-            </button>
+
+            <div class="w-full">
+              <%= client_fields.label :address, "Addresse", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%=
+                client_fields.text_field :address, data: {bill_form_target: "clientAddress"},
+                class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              %>
+            </div>
+
+            <div class="w-full">
+              <%= client_fields.label :post_code, "Code postal", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%=
+                client_fields.text_field :post_code, data: {bill_form_target: "clientPostCode"},
+                class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              %>
+            </div>
+
+            <div class="w-full">
+              <%= client_fields.label :city, "Ville", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%=
+                client_fields.text_field :city, data: {bill_form_target: "clientCity"},
+                class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              %>
+            </div>
+
+            <div class="w-full">
+              <%= client_fields.label :siret_number, "SIRET", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%=
+                client_fields.text_field :siret_number, data: {bill_form_target: "clientSiretNumber"},
+                class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              %>
+            </div>
+
+            <div class="w-full">
+              <%= client_fields.label :tva_number, "Numéro de TVA", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%=
+                client_fields.text_field :tva_number, data: {bill_form_target: "clientTvaNumber"},
+                class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              %>
+            </div>
+
+            <div class="w-full">
+              <%= client_fields.label :email, "Email", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%=
+                client_fields.text_field :email, data: {bill_form_target: "clientEmail"},
+                class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              %>
+            </div>
+
+            <div class="w-full">
+              <%= client_fields.label :phone_number, "Téléphone", class: "block text-sm font-medium leading-6 text-gray-900" %>
+              <%=
+                client_fields.text_field :phone_number, data: {bill_form_target: "clientPhoneNumber"},
+                class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              %>
+            </div>
           </div>
+        <% end %>
+        <div class="w-full flex justify-center">
+          <button data-bill-form-target="newClientConfirmation" class="hidden w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" data-action="click->bill-form#newClientConfirmation">
+            Confirmer le client
+          </button>
         </div>
 
-        <div data-bill-form-target="itemsColumn" class="hidden w-full flex flex-col items-center">
+        <div data-bill-form-target="itemsColumn" class="hidden">
 
-          <div class="flex justify-between items-center gap-6">
-            <p class="my-4 leading-6 text-gray-900 font-medium underline">Ajouter un item</p>
-            <button data-action="click->bill-form#addItem" data-bill-form-target="newItemBtn" type="button" class="h-fit rounded-full bg-indigo-600 p-1 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-              </svg>
+          <div class="flex justify-between items-center gap-2">
+            <div class="flex justify-between items-center gap-2 w-fit">
+              <p class="my-4 leading-6 text-gray-900 font-medium underline">Ajouter un item</p>
+              <button data-action="click->bill-form#addItem" data-bill-form-target="newItemBtn" type="button" class="h-fit rounded-full bg-indigo-600 p-1 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+              </button>
+            </div>
+            <p class="hidden leading-6 text-gray-900 font-medium w-1/3" data-bill-form-target="itemsNumberAdded"><i></i></p>
+            <button data-action="click->bill-form#itemsValidation" data-bill-form-target="itemsValidation" class="w-1/3 hidden rounded-md bg-indigo-600 px-1 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+              Valider les items
             </button>
           </div>
+            <% 10.times do |i| %>
+              <div class="hidden" data-bill-form-target="items">
+                <%= form.fields_for :item, index: i do |item_fields| %>
 
-          <% 10.times do |i| %>
-            <div class="hidden" data-bill-form-target="items">
-              <%= form.fields_for :item, index: i do |item_fields| %>
+                  <%= item_fields.label :name, "Désignation", class: "block text-sm font-medium leading-6 text-gray-900" %>
+                  <%= item_fields.text_field :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
-                <%= item_fields.label :name, "Désignation", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%= item_fields.text_field :name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                  <%= item_fields.label :description, "Description", class: "block text-sm font-medium leading-6 text-gray-900" %>
+                  <%= item_fields.text_field :description, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
-                <%= item_fields.label :description, "Description", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%= item_fields.text_field :description, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                  <%= item_fields.label :unity, "Unité", class: "block text-sm font-medium leading-6 text-gray-900" %>
+                  <%= item_fields.select :unity, Item::UNITY, {include_blank: true}, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
-                <%= item_fields.label :unity, "Unité", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%= item_fields.select :unity, Item::UNITY, {include_blank: true}, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" %>
+                  <%= item_fields.label :quantity, "Quantité", class: "block text-sm font-medium leading-6 text-gray-900" %>
+                  <%= item_fields.text_field :quantity, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
-                <%= item_fields.label :quantity, "Quantité", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%= item_fields.text_field :quantity, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+                  <%= item_fields.label :unit_price, "Prix unitaire", class: "block text-sm font-medium leading-6 text-gray-900" %>
+                  <%= item_fields.text_field :unit_price, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
 
-                <%= item_fields.label :unit_price, "Prix unitaire", class: "block text-sm font-medium leading-6 text-gray-900" %>
-                <%= item_fields.text_field :unit_price, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-
-              <% end %>
-            </div>
-          <% end %>
-
+                <% end %>
+              </div>
+            <% end %>
         </div>
       </div>
-      <div aria-label="Progress" class="w-fit mt-5">
+      <div aria-label="Progress" class="my-5">
         <ol role="list" class="divide-y divide-gray-300 rounded-md border border-gray-300 md:flex md:divide-y-0">
-          <li class="relative md:flex md:flex-1">
+          <li class="relative md:flex md:flex-1 w-1/3">
             <!-- Completed Step -->
-            <div class="group flex w-full items-center">
-              <span class="flex items-center px-6 py-4 text-sm font-medium">
-                <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-indigo-600">
-                  <svg class="h-6 w-6 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <div class="group flex w-full items-center px-4">
+              <span class="flex items-center py-4 text-sm font-medium">
+                <span data-bill-form-target="step" class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-indigo-600">
+                  <span data-bill-form-target="stepNumber" class="text-indigo-600">01</span>
+                  <svg data-bill-form-target="stepValidation" class="h-6 w-6 text-white hidden" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
                   </svg>
                 </span>
-                <span class="ml-4 text-sm font-medium text-gray-900">Ajout d'un client</span>
+                <span data-bill-form-target="stepText" class="ml-4 text-sm font-medium text-indigo-600">Ajout client</span>
               </span>
             </div>
             <!-- Arrow separator for lg screens and up -->
             <div class="absolute right-0 top-0 hidden h-full w-5 md:block" aria-hidden="true">
-              <svg class="h-full w-full text-gray-300" viewBox="0 0 22 80" fill="none" preserveAspectRatio="none">
+              <svg class="ml-2 h-full w-full text-gray-300" viewBox="0 0 22 80" fill="none" preserveAspectRatio="none">
                 <path d="M0 -2L20 40L0 82" vector-effect="non-scaling-stroke" stroke="currentcolor" stroke-linejoin="round" />
               </svg>
             </div>
           </li>
-          <li class="relative md:flex md:flex-1">
+          <li class="relative md:flex md:flex-1 w-1/3">
             <!-- Current Step -->
-            <div class="flex items-center px-6 py-4 text-sm font-medium" aria-current="step">
-              <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-indigo-600">
-                <span class="text-indigo-600">02</span>
+            <div class="flex items-center py-4 text-sm font-medium px-4" aria-current="step">
+              <span data-bill-form-target="step" class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300">
+                <span data-bill-form-target="stepNumber" class="text-gray-500">02</span>
+                <svg data-bill-form-target="stepValidation" class="h-6 w-6 text-white hidden" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
+                </svg>
               </span>
-              <span class="ml-4 text-sm font-medium text-indigo-600">Ajout d'items</span>
+              <span data-bill-form-target="stepText" class="ml-4 text-sm font-medium text-gray-500">Ajout items</span>
             </div>
             <!-- Arrow separator for lg screens and up -->
             <div class="absolute right-0 top-0 hidden h-full w-5 md:block" aria-hidden="true">
-              <svg class="h-full w-full text-gray-300" viewBox="0 0 22 80" fill="none" preserveAspectRatio="none">
+              <svg class="ml-2 h-full w-full text-gray-300" viewBox="0 0 22 80" fill="none" preserveAspectRatio="none">
                 <path d="M0 -2L20 40L0 82" vector-effect="non-scaling-stroke" stroke="currentcolor" stroke-linejoin="round" />
               </svg>
             </div>
           </li>
-          <li class="relative md:flex md:flex-1">
+          <li class="relative md:flex md:flex-1 w-fit">
             <!-- Upcoming Step -->
             <div class="group flex items-center">
-              <span class="flex items-center px-6 py-4 text-sm font-medium">
-                <button type="submit" class="flex items-center group">
-                  <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300">
-                    <span class="text-gray-500">03</span>
+              <span data-bill-form-target="finalStep" class="flex items-center py-4 text-sm font-medium px-4">
+                <button type="submit" data-bill-form-target="finalButton" class="flex items-center group" disabled>
+                  <span data-bill-form-target="step" class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-300">
+                    <span data-bill-form-target="stepNumber" class="text-gray-500">03</span>
                   </span>
-                  <span class="ml-4 text-sm font-medium text-gray-500 group-hover:text-gray-900">Génération facture</span>
+                  <span data-bill-form-target="stepText" class="ml-4 text-sm font-medium text-gray-500 text-left">Génération facture</span>
                 </button>
               </span>
             </div>
